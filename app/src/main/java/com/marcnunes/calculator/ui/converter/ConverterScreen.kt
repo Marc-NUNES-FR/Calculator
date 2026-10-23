@@ -275,7 +275,7 @@ private fun DateTool() {
     var pickingStart by remember { mutableStateOf(true) }
 
 
-    Text(stringResource(R.string.date_title), fontWeight = FontWeight.SemiBold)
+    Text(stringResource(R.string.tool_date), fontWeight = FontWeight.SemiBold)
     Spacer(Modifier.height(12.dp))
     OutlinedTextField(debut?.toString() ?: "", {}, readOnly = true, label = { Text(stringResource(R.string.date_start)) }, modifier = Modifier.fillMaxWidth())
     Spacer(Modifier.height(8.dp))
@@ -374,7 +374,7 @@ private fun IpRangeTool(context: Context) {
     var prefix by remember { mutableStateOf(24f) }
     Text(stringResource(R.string.iprange_subtitle), fontSize = 13.sp)
     Spacer(Modifier.height(8.dp))
-    OutlinedTextField(ip, { ip = it }, label = { Text(stringResource(R.string.iprange_ip_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+    OutlinedTextField(ip, { ip = it }, label = { Text(stringResource(R.string.ip_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
     Spacer(Modifier.height(8.dp))
     val p = prefix.toInt()
     Text(stringResource(R.string.iprange_netmask_cidr, ipToString(maskLong(p)), p), fontWeight = FontWeight.SemiBold)

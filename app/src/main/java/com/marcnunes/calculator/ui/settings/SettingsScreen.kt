@@ -69,7 +69,7 @@ fun SettingsScreen(
     onCornerChange: (Int) -> Unit
 ) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
-        Text(stringResource(R.string.settings_title), fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.tab_settings), fontSize = 22.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(16.dp))
 
         Text(stringResource(R.string.theme_mode), fontWeight = FontWeight.SemiBold)
