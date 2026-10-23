@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Calculatrice &amp; Convertisseur</string>
-    <string name="tab_calculator">Calculatrice</string>
+    <string name="app_name">Calculadora &amp; Calculadora</string>
+    <string name="tab_calculator">Calculadora</string>
     <string name="tab_converter">Convertisseur</string>
     <string name="tab_settings">Paramètres</string>
     <string name="mode_classic">Classique</string>
