@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Calculatrice &amp; Convertisseur</string>
+    <string name="app_name">Calculator &amp; Converter</string>
     <string name="tab_calculator">Calculator</string>
     <string name="tab_converter">Converter</string>
     <string name="tab_settings">Settings</string>
     <string name="mode_classic">Classic</string>
-    <string name="mode_scientific">Scientifique</string>
-    <string name="tool_length">Longueur</string>
-    <string name="tool_mass">Masse</string>
+    <string name="mode_scientific">Scientist</string>
+    <string name="tool_length">Length</string>
+    <string name="tool_mass">Mass</string>
     <string name="tool_volume">Volume</string>
-    <string name="tool_temperature">Température</string>
-    <string name="tool_area">Aires</string>
-    <string name="tool_speed">Vitesse</string>
-    <string name="tool_time">Temps</string>
-    <string name="tool_data">Données</string>
+    <string name="tool_temperature">Temperature</string>
+    <string name="tool_area">Area</string>
+    <string name="tool_speed">Speed</string>
+    <string name="tool_time">Time</string>
+    <string name="tool_data">Data</string>
     <string name="tool_date">Date</string>
     <string name="tool_ip_range">Plages Réseau IP</string>
     <string name="theme_light">Clair</string>
