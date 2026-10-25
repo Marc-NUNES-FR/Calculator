@@ -9,6 +9,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -31,25 +32,20 @@ fun CalculatorApp(context: Context) {
     val prefs = remember { context.getSharedPreferences("calculator_prefs", Context.MODE_PRIVATE) }
     val tab = remember { mutableStateOf(Tab.CALCULATOR) }
     val themeMode = remember { mutableStateOf(prefs.getString("theme_mode", "AUTO") ?: "AUTO") }
-    val darkMode = remember {
-        mutableStateOf(
-            when (themeMode.value) {
-                "LIGHT" -> false
-                "DARK" -> true
-                else -> isSystemInDarkTheme()
-            }
-        )
+    val systemDark = isSystemInDarkTheme()
+    val darkMode = remember { mutableStateOf(themeMode.value == "DARK" || (themeMode.value != "LIGHT" && systemDark)) }
+    LaunchedEffect(themeMode.value, systemDark) {
+        darkMode.value = when (themeMode.value) {
+            "LIGHT" -> false
+            "DARK" -> true
+            else -> systemDark
+        }
     }
     val accent = remember { mutableStateOf(prefs.getInt("accent_color", 0xFF00BCD4.toInt())) }
     val cornerPct = remember { mutableStateOf(prefs.getInt("corner_pct", 50)) }
 
     fun applyTheme(mode: String) {
         themeMode.value = mode
-        darkMode.value = when (mode) {
-            "LIGHT" -> false
-            "DARK" -> true
-            else -> isSystemInDarkTheme()
-        }
         prefs.edit().putString("theme_mode", mode).apply()
     }
 

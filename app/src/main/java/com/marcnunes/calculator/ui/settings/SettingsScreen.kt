@@ -135,14 +135,14 @@ private fun ColorPicker(current: Int, onPick: (Int) -> Unit) {
     var v by remember { mutableStateOf(if (hsb[2] == 0f) 1f else hsb[2]) }
 
     val currentColor = android.graphics.Color.HSVToColor(floatArrayOf(hue, 1f, v))
-    Box(Modifier.fillMaxWidth()) {
+    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         HueWheel(
             hue = hue,
-            modifier = Modifier.size(140.dp).align(Alignment.CenterHorizontally).pointerInput(Unit) {
+            modifier = Modifier.size(140.dp).pointerInput(Unit) {
                 detectTapGestures { offset ->
                     val c = Offset(size.width / 2f, size.height / 2f)
                     val d = sqrt((offset.x - c.x).pow(2) + (offset.y - c.y).pow(2))
-                    if (d < size.minDimension / 2f) {
+                    if (d < minOf(size.width, size.height) / 2f) {
                         var ang = Math.toDegrees(atan2((offset.y - c.y).toDouble(), (offset.x - c.x).toDouble()))
                         if (ang < 0) ang += 360.0
                         hue = ang.toFloat()

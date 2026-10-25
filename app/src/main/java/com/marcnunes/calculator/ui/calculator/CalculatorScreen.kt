@@ -54,14 +54,13 @@ fun formatNumber(d: Double): String {
 }
 
 
-/** Évaluation d'expression arithmétique (parseur récursif descendant). */
-fun evaluate(expr: String): Double {
-    val t = expr.replace("×", "*").replace("÷", "/").replace("−", "-").replace("π", Math.PI.toString())
-    var pos = 0
-    fun peek(): Char = if (pos < t.length) t[pos] else ' '
-    fun next() { pos++ }
-    fun skip() { while (pos < t.length && t[pos] == ' ') pos++ }
-    fun atom(): Double {
+/** Parseur récursif descendant (les méthodes d'une classe peuvent se référencer librement). */
+private class ExprParser(private val t: String) {
+    private var pos = 0
+    private fun peek(): Char = if (pos < t.length) t[pos] else ' '
+    private fun next() { pos++ }
+    private fun skip() { while (pos < t.length && t[pos] == ' ') pos++ }
+    private fun atom(): Double {
         skip()
         if (peek() == '(') { next(); val v = add(); skip(); if (peek() == ')') next(); return v }
         if (peek() == '√') { next(); return sqrt(unary()) }
@@ -80,19 +79,19 @@ fun evaluate(expr: String): Double {
         if (start == pos) { if (pos < t.length) pos++; return 0.0 }
         return t.substring(start, pos).toDouble()
     }
-    fun powTerm(): Double {
+    private fun powTerm(): Double {
         val v = atom()
         skip()
         if (peek() == '^') { next(); return v.pow(unary()) }
         return v
     }
-    fun unary(): Double {
+    private fun unary(): Double {
         skip()
         if (peek() == '-') { next(); return -unary() }
         if (peek() == '+') { next(); return unary() }
         return powTerm()
     }
-    fun mul(): Double {
+    private fun mul(): Double {
         var v = unary()
         while (true) {
             skip()
@@ -108,7 +107,6 @@ fun evaluate(expr: String): Double {
         var v = mul()
         while (true) {
             skip()
-
             when (peek()) {
                 '+' -> { next(); v += mul() }
                 '-' -> { next(); v -= mul() }
@@ -116,8 +114,11 @@ fun evaluate(expr: String): Double {
             }
         }
     }
-    return add()
 }
+
+fun evaluate(expr: String): Double = ExprParser(
+    expr.replace("×", "*").replace("÷", "/").replace("−", "-").replace("π", Math.PI.toString())
+).add()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

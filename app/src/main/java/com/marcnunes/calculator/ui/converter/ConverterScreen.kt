@@ -212,7 +212,7 @@ private fun UnitTool(context: Context, cat: String) {
         readOnly = true,
         label = { Text(stringResource(R.string.result_label, units[to].label)) },
         trailingIcon = {
-            IconButton(onClick: {
+            IconButton(onClick = {
                 val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 cm.setPrimaryClip(ClipData.newPlainText("result", result))
                 copied = true
@@ -334,7 +334,7 @@ private fun CopyRow(context: Context, label: String, value: String) {
             Text(label, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
             Text(value, fontSize = 15.sp)
         }
-        IconButton(onClick: {
+        IconButton(onClick = {
             val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             cm.setPrimaryClip(ClipData.newPlainText(label, value))
         }) { Icon(Icons.Filled.ContentCopy, contentDescription = stringResource(R.string.copy), Modifier.size(18.dp)) }
@@ -405,7 +405,7 @@ private fun IpRangeTool(context: Context) {
     CopyRow(context, stringResource(R.string.iprange_entered), ip.trim())
     CopyRow(context, stringResource(R.string.iprange_netmask), ipToString(mask) + " (/" + p + ")")
     CopyRow(context, stringResource(R.string.iprange_wildcard), ipToString(mask.inv() and 0xFFFFFFFFL))
-    CopyRow(context, stringResource(R.string.iprange_class, classe, stringResource(if (prive) R.string.iprange_private else R.string.iprange_public)))
+    CopyRow(context, stringResource(R.string.iprange_class), classe + " — " + stringResource(if (prive) R.string.iprange_private else R.string.iprange_public))
 
     Spacer(Modifier.height(12.dp))
     Text(stringResource(R.string.iprange_range_title), fontWeight = FontWeight.Bold)
