@@ -20,9 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Brightness2
-import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -40,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -75,12 +73,12 @@ fun SettingsScreen(
         Text(stringResource(R.string.theme_mode), fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("LIGHT" to Icons.Filled.WbSunny, "AUTO" to Icons.Filled.Brightness2, "DARK" to Icons.Filled.Brightness2).forEach { (m, icon) ->
+            listOf("LIGHT" to R.drawable.ic_sun, "AUTO" to R.drawable.ic_moon, "DARK" to R.drawable.ic_moon).forEach { (m, icon) ->
                 FilterChip(
                     selected = themeMode.value == m,
                     onClick = { onThemeModeChange(m) },
                     label = { Text(stringResource(when (m) { "LIGHT" -> R.string.theme_light; "DARK" -> R.string.theme_dark; else -> R.string.theme_auto })) },
-                    leadingIcon = { Icon(icon, contentDescription = null, Modifier.size(16.dp)) }
+                    leadingIcon = { Icon(painterResource(icon), contentDescription = null, Modifier.size(16.dp)) }
                 )
             }
         }
