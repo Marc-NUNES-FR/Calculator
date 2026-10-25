@@ -20,10 +20,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -48,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -153,7 +150,7 @@ fun ConverterScreen(context: Context) {
 @Composable
 private fun ToolHeader(title: String, onBack: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-        IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null) }
+        IconButton(onClick = onBack) { Icon(painterResource(R.drawable.ic_back), contentDescription = null) }
         Text(title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
     }
 }
@@ -216,7 +213,7 @@ private fun UnitTool(context: Context, cat: String) {
                 val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 cm.setPrimaryClip(ClipData.newPlainText("result", result))
                 copied = true
-            }) { Icon(Icons.Filled.ContentCopy, contentDescription = stringResource(R.string.copy)) }
+            }) { Icon(painterResource(R.drawable.ic_copy), contentDescription = stringResource(R.string.copy)) }
         },
         modifier = Modifier.fillMaxWidth(), singleLine = true
     )
@@ -282,7 +279,7 @@ private fun DateTool() {
     OutlinedTextField(fin?.toString() ?: "", {}, readOnly = true, label = { Text(stringResource(R.string.date_end)) }, modifier = Modifier.fillMaxWidth())
     Spacer(Modifier.height(12.dp))
     Button(onClick = { pickingStart = true; showPicker = true }, modifier = Modifier.fillMaxWidth()) {
-        Icon(Icons.Filled.CalendarMonth, contentDescription = null)
+        Icon(painterResource(R.drawable.ic_calendar), contentDescription = null)
         Spacer(Modifier.width(6.dp))
         Text(stringResource(R.string.pick_dates))
     }
@@ -337,7 +334,7 @@ private fun CopyRow(context: Context, label: String, value: String) {
         IconButton(onClick = {
             val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             cm.setPrimaryClip(ClipData.newPlainText(label, value))
-        }) { Icon(Icons.Filled.ContentCopy, contentDescription = stringResource(R.string.copy), Modifier.size(18.dp)) }
+        }) { Icon(painterResource(R.drawable.ic_copy), contentDescription = stringResource(R.string.copy), Modifier.size(18.dp)) }
     }
 }
 
