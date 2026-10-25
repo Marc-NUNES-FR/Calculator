@@ -63,7 +63,7 @@
     <string name="iprange_entered">Adresse saisie</string>
     <string name="iprange_netmask">Masque de sous-réseau</string>
     <string name="iprange_wildcard">Masque inversé (wildcard)</string>
-    <string name="iprange_class">Classe : %1$s (%2$s)</string>
+    <string name="iprange_class">Classe</string>
     <string name="iprange_private">Réseau privé</string>
     <string name="iprange_public">Réseau public</string>
     <string name="iprange_range_title">Plage du sous-réseau</string>
