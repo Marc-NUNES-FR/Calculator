@@ -1,6 +1,6 @@
 # 🧮 Calculator — Calculatrice & Convertisseur
 
-Application Android **Kotlin + Jetpack Compose**, refonte fidèle de l'application d'origine.
+Application Android **Kotlin + Jetpack Compose**.
 
 ## ✨ Fonctionnalités
 
