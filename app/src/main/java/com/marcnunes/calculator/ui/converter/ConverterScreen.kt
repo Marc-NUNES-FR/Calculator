@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,7 +63,7 @@ import kotlin.math.pow
 
 
 data class UnitDef(val label: String, val factor: Double)
-data class ToolDef(@StringRes val nameRes: Int, val key: String)
+data class ToolDef(@StringRes val nameRes: Int, val key: String, val iconRes: Int? = null, val accentRes: Int? = null)
 
 object Categories {
     val unitCategories: Map<String, List<UnitDef>> = linkedMapOf(
@@ -95,19 +100,19 @@ object Categories {
 
 
     val tools: List<ToolDef> = listOf(
-        ToolDef(R.string.tool_length, "length"),
-        ToolDef(R.string.tool_mass, "mass"),
-        ToolDef(R.string.tool_volume, "volume"),
-        ToolDef(R.string.tool_temperature, "temperature"),
-        ToolDef(R.string.tool_area, "area"),
-        ToolDef(R.string.tool_speed, "speed"),
+        ToolDef(R.string.tool_length, "length", R.drawable.ic_length, R.drawable.ic_length_accent),
+        ToolDef(R.string.tool_mass, "mass", R.drawable.ic_weight),
+        ToolDef(R.string.tool_volume, "volume", R.drawable.ic_volume),
+        ToolDef(R.string.tool_temperature, "temperature", R.drawable.ic_temperature),
+        ToolDef(R.string.tool_area, "area", R.drawable.ic_area),
+        ToolDef(R.string.tool_speed, "speed", R.drawable.ic_speed, R.drawable.ic_speed_accent),
         ToolDef(R.string.tool_time, "time"),
-        ToolDef(R.string.tool_data, "data"),
+        ToolDef(R.string.tool_data, "data", R.drawable.ic_data),
         ToolDef(R.string.tool_numeral, "numeral"),
-        ToolDef(R.string.tool_imc, "imc"),
-        ToolDef(R.string.tool_date, "date"),
-        ToolDef(R.string.tool_ip_formats, "ip_formats"),
-        ToolDef(R.string.tool_ip_range, "ip_range")
+        ToolDef(R.string.tool_imc, "imc", R.drawable.ic_imc),
+        ToolDef(R.string.tool_date, "date", R.drawable.ic_date),
+        ToolDef(R.string.tool_ip_formats, "ip_formats", R.drawable.ic_ip_converter),
+        ToolDef(R.string.tool_ip_range, "ip_range", R.drawable.ic_ip_range)
     )
 }
 
@@ -138,8 +143,14 @@ fun ConverterScreen(context: Context) {
             items(Categories.tools.size) { i ->
                 val t = Categories.tools[i]
                 ElevatedCard(onClick = { tool = t }, modifier = Modifier.height(80.dp)) {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(stringResource(t.nameRes), fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                    Column(
+                        Modifier.fillMaxSize().padding(4.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        t.iconRes?.let { ToolIcon(it, t.accentRes, Modifier.size(28.dp)) }
+                        Spacer(Modifier.height(4.dp))
+                        Text(stringResource(t.nameRes), fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                     }
                 }
             }
@@ -152,6 +163,18 @@ private fun ToolHeader(title: String, onBack: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         IconButton(onClick = onBack) { Icon(painterResource(R.drawable.ic_back), contentDescription = null) }
         Text(title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun ToolIcon(iconRes: Int, accentRes: Int?, modifier: Modifier = Modifier) {
+    val primary = MaterialTheme.colorScheme.primary
+    val accent2 = lerp(primary, Color.Black, 0.45f)
+    Box(modifier, contentAlignment = Alignment.Center) {
+        Image(painterResource(iconRes), contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit, colorFilter = ColorFilter.tint(primary))
+        accentRes?.let {
+            Image(painterResource(it), contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit, colorFilter = ColorFilter.tint(accent2))
+        }
     }
 }
 
