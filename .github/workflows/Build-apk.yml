@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main, master ]
     tags:
-      - "v*"
+      - Automatisation
   pull_request:
+    APK-build
   workflow_dispatch:
 
 permissions:
