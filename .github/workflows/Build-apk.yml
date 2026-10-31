@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main, master ]
     tags:
-      - Automatisation
   pull_request:
   workflow_dispatch:
 
@@ -14,7 +13,7 @@ permissions:
 jobs:
   build-apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
