@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.marcnunes.calculator"
-    compileSdk = 36
+    namespace = "org.marc.nunes.calculator"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.marcnunes.calculator"
+        applicationId = "org.marc.nunes.calculator"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
     }
