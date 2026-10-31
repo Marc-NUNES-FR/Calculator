@@ -190,18 +190,18 @@ fun CalculatorScreen(context: Context, cornerPct: Int) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     rowKeys.forEach { k ->
                         val sciDescription = when (k) {
-                            "sin(" -> "Sinus (radians)"
-                            "cos(" -> "Cosinus (radians)"
-                            "tan(" -> "Tangente (radians)"
-                            "π" -> "Pi (3.14159...)"
-                            "ln(" -> "Logarithme naturel"
-                            "log(" -> "Logarithme base 10"
-                            "√" -> "Racine carrée"
-                            "^" -> "Puissance"
-                            "EXP" -> "Exponentielle (e^x)"
-                            "x!" -> "Factorielle"
-                            "(" -> "Ouvrir parenthèse"
-                            ")" -> "Fermer parenthèse"
+                            "sin(" -> stringResource(R.string.tooltip_sin)
+                            "cos(" -> stringResource(R.string.tooltip_cos)
+                            "tan(" -> stringResource(R.string.tooltip_tan)
+                            "π" -> stringResource(R.string.tooltip_pi)
+                            "ln(" -> stringResource(R.string.tooltip_ln)
+                            "log(" -> stringResource(R.string.tooltip_log)
+                            "√" -> stringResource(R.string.tooltip_sqrt)
+                            "^" -> stringResource(R.string.tooltip_power)
+                            "EXP" -> stringResource(R.string.tooltip_exp)
+                            "x!" -> stringResource(R.string.tooltip_factorial)
+                            "(" -> stringResource(R.string.tooltip_open_paren)
+                            ")" -> stringResource(R.string.tooltip_close_paren)
                             else -> null
                         }
                         if (sciDescription != null) {
@@ -239,16 +239,16 @@ fun CalculatorScreen(context: Context, cornerPct: Int) {
                         else -> { { expression += if (k == ",") "." else k } }
                     }
                     val description = when (k) {
-                        "AC" -> "Tout effacer"
-                        "X" -> "Supprimer"
-                        "%" -> "Pourcentage"
-                        "÷" -> "Division"
-                        "×" -> "Multiplication"
-                        "−" -> "Soustraction"
-                        "+" -> "Addition"
-                        "±" -> "Changer de signe"
-                        "," -> "Virgule"
-                        "=" -> "Égale"
+                        "AC" -> stringResource(R.string.tooltip_clear_all)
+                        "X" -> stringResource(R.string.tooltip_delete)
+                        "%" -> stringResource(R.string.tooltip_percent)
+                        "÷" -> stringResource(R.string.tooltip_divide)
+                        "×" -> stringResource(R.string.tooltip_multiply)
+                        "−" -> stringResource(R.string.tooltip_subtract)
+                        "+" -> stringResource(R.string.tooltip_add)
+                        "±" -> stringResource(R.string.tooltip_negate)
+                        "," -> stringResource(R.string.tooltip_decimal)
+                        "=" -> stringResource(R.string.tooltip_equals)
                         else -> null
                     }
                     val isIcon = (k == "X")

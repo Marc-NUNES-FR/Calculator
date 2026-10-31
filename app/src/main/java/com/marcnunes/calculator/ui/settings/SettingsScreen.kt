@@ -42,6 +42,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.content.Context
+import androidx.compose.foundation.gestures.detectDragGestures
 import com.marcnunes.calculator.R
 
 import kotlin.math.atan2
@@ -57,6 +59,7 @@ val PRESET_COLORS = listOf(
 
 @Composable
 fun SettingsScreen(
+    context: Context,
     themeMode: MutableState<String>,
     darkMode: MutableState<Boolean>,
     accent: MutableState<Int>,
@@ -66,6 +69,20 @@ fun SettingsScreen(
     onAccentChange: (Int) -> Unit,
     onCornerChange: (Int) -> Unit
 ) {
+    val prefs = remember { context.getSharedPreferences("calculator_prefs", Context.MODE_PRIVATE) }
+    val favoriteColors = remember { mutableStateOf(prefs.getStringSet("favorite_colors", emptySet())?.map { it.toInt() } ?: emptyList()) }
+    
+    fun addToFavorites(color: Int) {
+        val newFavorites = favoriteColors.value.toMutableSet().apply { add(color) }
+        favoriteColors.value = newFavorites.toList()
+        prefs.edit().putStringSet("favorite_colors", newFavorites.map { it.toString() }.toSet()).apply()
+    }
+    
+    fun removeFromFavorites(color: Int) {
+        val newFavorites = favoriteColors.value.toMutableSet().apply { remove(color) }
+        favoriteColors.value = newFavorites.toList()
+        prefs.edit().putStringSet("favorite_colors", newFavorites.map { it.toString() }.toSet()).apply()
+    }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
         Text(stringResource(R.string.tab_settings), fontSize = 22.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(16.dp))
@@ -73,12 +90,11 @@ fun SettingsScreen(
         Text(stringResource(R.string.theme_mode), fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("LIGHT" to R.drawable.ic_sun, "AUTO" to R.drawable.ic_moon, "DARK" to R.drawable.ic_moon).forEach { (m, icon) ->
+            listOf("LIGHT", "AUTO", "DARK").forEach { m ->
                 FilterChip(
                     selected = themeMode.value == m,
                     onClick = { onThemeModeChange(m) },
-                    label = { Text(stringResource(when (m) { "LIGHT" -> R.string.theme_light; "DARK" -> R.string.theme_dark; else -> R.string.theme_auto })) },
-                    leadingIcon = { Icon(painterResource(icon), contentDescription = null, Modifier.size(16.dp)) }
+                    label = { Text(stringResource(when (m) { "LIGHT" -> R.string.theme_light; "DARK" -> R.string.theme_dark; else -> R.string.theme_auto })) }
                 )
             }
         }
@@ -136,6 +152,10 @@ private fun ColorPicker(current: Int, onPick: (Int) -> Unit) {
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         HueWheel(
             hue = hue,
+            onHueChange = { newHue ->
+                hue = newHue
+                onPick(android.graphics.Color.HSVToColor(floatArrayOf(hue, 1f, v)))
+            },
             modifier = Modifier.size(140.dp).pointerInput(Unit) {
                 detectTapGestures { offset ->
                     val c = Offset(size.width / 2f, size.height / 2f)
@@ -165,8 +185,32 @@ private fun ColorPicker(current: Int, onPick: (Int) -> Unit) {
 
 
 @Composable
-private fun HueWheel(hue: Float, modifier: Modifier = Modifier) {
-    Canvas(modifier) {
+private fun HueWheel(hue: Float, onHueChange: (Float) -> Unit, modifier: Modifier = Modifier) {
+    var isDragging by remember { mutableStateOf(false) }
+    Canvas(modifier.pointerInput(Unit) {
+        detectDragGestures(
+            onDragStart = { offset ->
+                val c = Offset(size.width / 2f, size.height / 2f)
+                val d = sqrt((offset.x - c.x).pow(2) + (offset.y - c.y).pow(2))
+                if (d < minOf(size.width, size.height) / 2f) {
+                    isDragging = true
+                }
+            },
+            onDrag = { change, dragAmount ->
+                if (isDragging) {
+                    val c = Offset(size.width / 2f, size.height / 2f)
+                    val offset = change.position
+                    val d = sqrt((offset.x - c.x).pow(2) + (offset.y - c.y).pow(2))
+                    if (d < minOf(size.width, size.height) / 2f) {
+                        var ang = Math.toDegrees(atan2((offset.y - c.y).toDouble(), (offset.x - c.x).toDouble()))
+                        if (ang < 0) ang += 360.0
+                        onHueChange(ang.toFloat())
+                    }
+                }
+            },
+            onDragEnd = { isDragging = false }
+        )
+    }) {
         val r = this.size.minDimension / 2 - 10f
         for (i in 0..359 step 6) {
             val angle = Math.toRadians(i.toDouble())

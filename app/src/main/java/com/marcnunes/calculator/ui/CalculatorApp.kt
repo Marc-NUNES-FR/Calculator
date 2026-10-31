@@ -67,6 +67,7 @@ fun CalculatorApp(context: Context) {
                     Tab.CALCULATOR -> CalculatorScreen(context = context, cornerPct = cornerPct.value)
                     Tab.CONVERTER -> ConverterScreen(context = context)
                     Tab.SETTINGS -> SettingsScreen(
+                        context = context,
                         themeMode = themeMode,
                         darkMode = darkMode,
                         accent = accent,
