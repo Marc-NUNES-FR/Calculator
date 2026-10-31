@@ -175,7 +175,7 @@ fi
 eval "set -- $(
     printf '%s\n' "$DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS" \
     | xargs -n1 -d '\n' printf '%s\n'
-)
+)"
 
 exec "$JAVACMD" "$@"
 
