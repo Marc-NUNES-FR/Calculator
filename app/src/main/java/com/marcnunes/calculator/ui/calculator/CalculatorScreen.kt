@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcnunes.calculator.R
 import com.marcnunes.calculator.ui.theme.keyShape
+import androidx.compose.foundation.TooltipBox
+import androidx.compose.material3.Tooltip
 import kotlin.math.*
 
 data class HistoryEntry(val expression: String, val result: String)
@@ -187,7 +189,31 @@ fun CalculatorScreen(context: Context, cornerPct: Int) {
             sci.chunked(6).forEach { rowKeys ->
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     rowKeys.forEach { k ->
-                        Key(k, keyShape(cornerPct), Modifier.weight(1f), highlight = false) { expression += k }
+                        val sciDescription = when (k) {
+                            "sin(" -> "Sinus (radians)"
+                            "cos(" -> "Cosinus (radians)"
+                            "tan(" -> "Tangente (radians)"
+                            "π" -> "Pi (3.14159...)"
+                            "ln(" -> "Logarithme naturel"
+                            "log(" -> "Logarithme base 10"
+                            "√" -> "Racine carrée"
+                            "^" -> "Puissance"
+                            "EXP" -> "Exponentielle (e^x)"
+                            "x!" -> "Factorielle"
+                            "(" -> "Ouvrir parenthèse"
+                            ")" -> "Fermer parenthèse"
+                            else -> null
+                        }
+                        if (sciDescription != null) {
+                            TooltipBox(
+                                tooltip = { Tooltip(text = sciDescription) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Key(k, keyShape(cornerPct), Modifier.fillMaxWidth(), highlight = false) { expression += k }
+                            }
+                        } else {
+                            Key(k, keyShape(cornerPct), Modifier.weight(1f), highlight = false) { expression += k }
+                        }
                     }
                 }
                 Spacer(Modifier.height(6.dp))
@@ -212,7 +238,38 @@ fun CalculatorScreen(context: Context, cornerPct: Int) {
                         "=" -> { { equals() } }
                         else -> { { expression += if (k == ",") "." else k } }
                     }
-                    Key(k, keyShape(cornerPct), Modifier.weight(1f), highlight = (k in listOf("=", "÷", "×", "−", "+")), onClick = onClick)
+                    val description = when (k) {
+                        "AC" -> "Tout effacer"
+                        "X" -> "Supprimer"
+                        "%" -> "Pourcentage"
+                        "÷" -> "Division"
+                        "×" -> "Multiplication"
+                        "−" -> "Soustraction"
+                        "+" -> "Addition"
+                        "±" -> "Changer de signe"
+                        "," -> "Virgule"
+                        "=" -> "Égale"
+                        else -> null
+                    }
+                    val isIcon = (k == "X")
+                    if (description != null) {
+                        TooltipBox(
+                            tooltip = { Tooltip(text = description) },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            if (isIcon) {
+                                IconKey(R.drawable.ic_backspace, keyShape(cornerPct), Modifier.fillMaxWidth(), highlight = (k in listOf("=", "÷", "×", "−", "+")), onClick = onClick)
+                            } else {
+                                Key(k, keyShape(cornerPct), Modifier.fillMaxWidth(), highlight = (k in listOf("=", "÷", "×", "−", "+")), onClick = onClick)
+                            }
+                        }
+                    } else {
+                        if (isIcon) {
+                            IconKey(R.drawable.ic_backspace, keyShape(cornerPct), Modifier.weight(1f), highlight = (k in listOf("=", "÷", "×", "−", "+")), onClick = onClick)
+                        } else {
+                            Key(k, keyShape(cornerPct), Modifier.weight(1f), highlight = (k in listOf("=", "÷", "×", "−", "+")), onClick = onClick)
+                        }
+                    }
                 }
             }
             Spacer(Modifier.height(6.dp))
@@ -220,6 +277,19 @@ fun CalculatorScreen(context: Context, cornerPct: Int) {
         TextButton(onClick = { scientific = !scientific }) {
             Text(stringResource(if (scientific) R.string.mode_classic else R.string.mode_scientific))
         }
+    }
+}
+
+@Composable
+private fun IconKey(iconRes: Int, shape: androidx.compose.foundation.shape.RoundedCornerShape, modifier: Modifier = Modifier, highlight: Boolean = false, onClick: () -> Unit) {
+    Box(
+        modifier
+            .height(64.dp)
+            .background(if (highlight) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant, shape)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(painterResource(iconRes), contentDescription = null, tint = if (highlight) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface)
     }
 }
 

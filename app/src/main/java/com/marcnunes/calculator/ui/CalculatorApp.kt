@@ -53,6 +53,7 @@ fun CalculatorApp(context: Context) {
     CalculatorTheme(darkTheme = darkMode.value, accentColor = accent.value) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
+                Spacer(Modifier.height(16.dp))
                 TabRow(selectedTabIndex = tab.value.ordinal) {
                     Tab.entries.forEach { t ->
                         Tab(

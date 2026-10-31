@@ -171,9 +171,9 @@ private fun ToolIcon(iconRes: Int, accentRes: Int?, modifier: Modifier = Modifie
     val primary = MaterialTheme.colorScheme.primary
     val accent2 = lerp(primary, Color.Black, 0.45f)
     Box(modifier, contentAlignment = Alignment.Center) {
-        Image(painterResource(iconRes), contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit, colorFilter = ColorFilter.tint(primary))
+        Image(painterResource(iconRes), contentDescription = null, modifier = Modifier.fillMaxSize().padding(2.dp), contentScale = ContentScale.Fit, colorFilter = ColorFilter.tint(primary))
         accentRes?.let {
-            Image(painterResource(it), contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit, colorFilter = ColorFilter.tint(accent2))
+            Image(painterResource(it), contentDescription = null, modifier = Modifier.fillMaxSize().padding(2.dp), contentScale = ContentScale.Fit, colorFilter = ColorFilter.tint(accent2))
         }
     }
 }
