@@ -41,7 +41,7 @@ do
       app_path=$link;;         #
       *;;
         app_path=$APP_HOME/$link
-        ;;
+        )
     esac
 done
 
