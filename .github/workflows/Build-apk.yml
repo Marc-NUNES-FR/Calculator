@@ -24,15 +24,3 @@ jobs:
 
       - name: Build debug APK
         run: ./gradlew assembleDebug
-
-      - name: Upload APK to GitHub Release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_name: ${{ github.repository }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: app/build/outputs/apk/debug/app-debug.apk
-          asset_name: MyApp-debug.apk
-          tag: ${{ github.ref }}
-          prerelease: true
-          overwrite: true
-          body: "Nouvelle version de test Android Kotlin"
