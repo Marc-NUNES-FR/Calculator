@@ -1,19 +1,12 @@
-name: Build APK
+name: Test, Build and Release debug apk
 
 on:
-  push:
-    branches: [ main, master ]
-    tags:
-  pull_request:
-  workflow_dispatch:
-
-permissions:
-  contents: read
+  workflow_dispatch
 
 jobs:
-  build-apk:
+  build:
+    name: Build APK
     runs-on: ubuntu-latest
-    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
@@ -29,11 +22,17 @@ jobs:
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x ./gradlew
 
-      - name: Build release APK
-        run: ./gradlew --no-daemon --stacktrace assembleRelease
+      - name: Build debug APK
+        run: ./gradlew assembleDebug
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload APK to GitHub Release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: calculator-release-apk
-          path: app/build/outputs/apk/release/*.apk
+          repo_name: ${{ github.repository }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: app/build/outputs/apk/debug/app-debug.apk
+          asset_name: MyApp-debug.apk
+          tag: ${{ github.ref }}
+          prerelease: true
+          overwrite: true
+          body: "Nouvelle version de test Android Kotlin"
