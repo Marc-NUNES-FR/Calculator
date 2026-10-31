@@ -39,7 +39,7 @@ do
     link=${ls#*' -> '}
     case $link in             #/*)
       app_path=$link;;         #
-      *)
+      *;;
         app_path=$APP_HOME/$link
         ;;
     esac
