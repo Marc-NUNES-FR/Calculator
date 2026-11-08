@@ -41,8 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcnunes.calculator.R
 import com.marcnunes.calculator.ui.theme.keyShape
-import androidx.compose.foundation.TooltipBox
-import androidx.compose.material3.Tooltip
+import androidx.compose.material3.PlainTooltip
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import kotlin.math.*
 
 data class HistoryEntry(val expression: String, val result: String)
@@ -206,7 +208,9 @@ fun CalculatorScreen(context: Context, cornerPct: Int) {
                         }
                         if (sciDescription != null) {
                             TooltipBox(
-                                tooltip = { Tooltip(text = sciDescription) },
+                                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                                tooltip = { PlainTooltip { Text(sciDescription) } },
+                                state = rememberTooltipState(),
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Key(k, keyShape(cornerPct), Modifier.fillMaxWidth(), highlight = false) { expression += k }
@@ -254,7 +258,9 @@ fun CalculatorScreen(context: Context, cornerPct: Int) {
                     val isIcon = (k == "X")
                     if (description != null) {
                         TooltipBox(
-                            tooltip = { Tooltip(text = description) },
+                            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                            tooltip = { PlainTooltip { Text(description) } },
+                            state = rememberTooltipState(),
                             modifier = Modifier.weight(1f)
                         ) {
                             if (isIcon) {
