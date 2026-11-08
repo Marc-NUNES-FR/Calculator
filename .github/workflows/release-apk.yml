@@ -1,4 +1,4 @@
-name: Release APK
+name: Release APK & Archives
 
 on:
   push:
@@ -15,15 +15,15 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
@@ -35,14 +35,47 @@ jobs:
       - name: Build debug APK
         run: ./gradlew --no-daemon assembleDebug
 
-      - name: Publish APK as GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Prepare build artifacts and archives
         run: |
+          # Détermination de la version/tag
           TAG="${{ inputs.version }}"
           case "$GITHUB_REF_NAME" in v*) TAG="$GITHUB_REF_NAME" ;; esac
           if [ -z "$TAG" ]; then TAG="v1.0.$(date +%Y%m%d%H%M)"; fi
-          gh release create "$TAG" app/build/outputs/apk/debug/app-debug.apk \
-            --title "Calculator $TAG" \
-            --generate-notes \
-            2>/dev/null || gh release upload "$TAG" app/build/outputs/apk/debug/app-debug.apk --clobber
+          echo "RELEASE_TAG=$TAG" >> $GITHUB_ENV
+
+          # Noms dynamiques basés sur le tag
+          APK_NAME="Calculator-$TAG.apk"
+          ZIP_NAME="Calculator-$TAG.zip"
+          TAR_NAME="Calculator-$TAG.tar.gz"
+
+          # Copie et renommage de l'APK
+          cp app/build/outputs/apk/debug/app-debug.apk "./$APK_NAME"
+
+          # Compression des archives
+          zip -j "$ZIP_NAME" "./$APK_NAME"
+          tar -czvf "$TAR_NAME" "$APK_NAME"
+
+      - name: Upload artifacts to GitHub Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: calculator-build-${{ env.RELEASE_TAG }}
+          path: |
+            Calculator-*.apk
+            Calculator-*.zip
+            Calculator-*.tar.gz
+
+      - name: Publish files to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ env.RELEASE_TAG }}"
+          FILES="Calculator-$TAG.apk Calculator-$TAG.zip Calculator-$TAG.tar.gz"
+
+          # Vérification de l'existence de la release avant envoi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" $FILES --clobber
+          else
+            gh release create "$TAG" $FILES \
+              --title "Calculator $TAG" \
+              --generate-notes
+          fi
