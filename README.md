@@ -27,8 +27,8 @@ Toutes les chaînes de l'interface sont centralisées dans un seul fichier : app
 Le projet est prêt pour Crowdin (crowdin.yml inclus). Traductions communautaires bienvenues !
 
 ## 🛠️ Build
-1. Ouvrir le projet dans **Android Studio**
-2. Synchronisation Gradle, puis lancer sur émulateur ou appareil (minSdk 24)
+État du build : [![Build APK](https://github.com/Marc-NUNES-FR/Calculator/actions/workflows/build-apk.yml/badge.svg)](https://github.com/Marc-NUNES-FR/Calculator/actions/workflows/build-apk.yml)
+Il est aussi possible de télécharger le projet et de créer l'APK directement .
 
 ## 📄 Licence
 MIT — Copyright (c) 2026 Marc NUNES
