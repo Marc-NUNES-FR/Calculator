@@ -21,7 +21,7 @@ Application Android **Kotlin + Jetpack Compose**.
 ### ⚙️ Paramètres
 Thème Clair/Sombre/Auto · Couleur d'accentuation (palette + sélecteur personnalisé) · Arrondi des touches · Réinitialisation
 
-## 🌍 Traduction (Crowdin)
+## 🌍 Traduction ( [Crowdin](https://fr.crowdin.com/project/marc-calculator) )
 
 Toutes les chaînes de l'interface sont centralisées dans un seul fichier : app/src/main/res/values/strings.xml
 Le projet est prêt pour Crowdin (crowdin.yml inclus). Traductions communautaires bienvenues !
@@ -30,5 +30,7 @@ Le projet est prêt pour Crowdin (crowdin.yml inclus). Traductions communautaire
 État du build : [![Build APK](https://github.com/Marc-NUNES-FR/Calculator/actions/workflows/build-apk.yml/badge.svg)](https://github.com/Marc-NUNES-FR/Calculator/actions/workflows/build-apk.yml)
 Il est aussi possible de télécharger le projet et de créer l'APK directement .
 
-## 📄 Licence
-MIT — Copyright (c) 2026 Marc NUNES
+## 📄 [Licence](https://github.com/Marc-NUNES-FR/Calculator?tab=GPL-3.0-1-ov-file)
+[En savoir plus sur GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.html)
+
+![logo GPL 3.0](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)
